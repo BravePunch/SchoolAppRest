@@ -30,4 +30,10 @@ public class UserController {
         return userService.createUser(entity);
     }
 
+    @PutMapping(value = "/{id")
+    public @ResponseBody UserDto updateUser(@PathVariable("id") Integer id, @RequestBody UserDto entity) {
+
+        return userService.updateUser(id, entity);
+    }
+
 }

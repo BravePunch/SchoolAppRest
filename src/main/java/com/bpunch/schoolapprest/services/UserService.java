@@ -7,9 +7,11 @@ import com.bpunch.schoolapprest.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.BadRequestException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserService{
@@ -48,6 +50,22 @@ public class UserService{
 
         return dtoMapper.mapToDto(createdEntity);
 
+    }
+
+    public UserDto updateUser(Integer id, UserDto newEntity) {
+
+        Optional<User> target = userRepository.findById(id);
+
+        if (!target.isPresent())
+            throw new BadRequestException("Aucun User trouvé pour l'id: " + id);
+
+        User currentEntity = target.get();
+
+        currentEntity.setFirstName(newEntity.getFirstName());
+        currentEntity.setLastName(newEntity.getLastName());
+        currentEntity.setEmail(newEntity.getEmail());
+
+        return dtoMapper.mapToDto(userRepository.save(currentEntity));
     }
 
 }
