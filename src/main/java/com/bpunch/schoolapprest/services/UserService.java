@@ -14,10 +14,16 @@ import java.util.List;
 @Component
 public class UserService{
 
-    @Autowired
-    private IUserRepository userRepository;
+    private final IUserRepository userRepository;
 
     private UserDtoMapper dtoMapper = new UserDtoMapper();
+
+    @Autowired
+    public UserService(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+
 
     public List<UserDto> getAllUsers() {
 
@@ -25,15 +31,23 @@ public class UserService{
 
         List<UserDto> returnData = new ArrayList<>();
 
-
         while (results.hasNext()) {
 
             returnData.add(dtoMapper.mapToDto(results.next()));
 
         }
 
-
         return returnData;
+    }
+
+    public UserDto createUser(UserDto newEntity) {
+
+        User data = dtoMapper.mapToEntity(newEntity);
+
+        User createdEntity = userRepository.save(data);
+
+        return dtoMapper.mapToDto(createdEntity);
+
     }
 
 }
