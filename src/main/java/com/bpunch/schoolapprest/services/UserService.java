@@ -2,7 +2,9 @@ package com.bpunch.schoolapprest.services;
 
 import com.bpunch.schoolapprest.model.dto.UserDto;
 import com.bpunch.schoolapprest.model.dto.mappers.UserDtoMapper;
+import com.bpunch.schoolapprest.model.entity.Metadata;
 import com.bpunch.schoolapprest.model.entity.User;
+import com.bpunch.schoolapprest.model.enums.DataStatus;
 import com.bpunch.schoolapprest.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,6 +47,9 @@ public class UserService{
     public UserDto createUser(UserDto newEntity) {
 
         User data = dtoMapper.mapToEntity(newEntity);
+
+        data.setMetadata(new Metadata());
+        data.getMetadata().setStatus(DataStatus.ACTIVE);
 
         User createdEntity = userRepository.save(data);
 
