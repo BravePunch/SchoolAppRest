@@ -7,7 +7,6 @@ import java.util.Objects;
 
 
 @Entity
-@Inheritance
 @Table(name = "users")
 public class User {
 
