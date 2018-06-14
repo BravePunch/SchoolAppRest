@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IUserRepository extends CrudRepository<User, Integer> {
 
-    User findByFirstName(String firstName);
+    User findUserByFirstName(String firstName);
 
-    User findByLastName(String lastName);
+    User findUserByLastName(String lastName);
+
+    User findUserByEmail(String email);
 
     User findAllByMetadata_Status(DataStatus dataStatus);
 

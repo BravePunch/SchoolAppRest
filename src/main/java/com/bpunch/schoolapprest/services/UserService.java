@@ -8,6 +8,7 @@ import com.bpunch.schoolapprest.model.enums.DataStatus;
 import com.bpunch.schoolapprest.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.ws.rs.BadRequestException;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class UserService{
     }
 
 
-
+    @Transactional
     public List<UserDto> getAllUsers() {
 
         Iterator<User> results = userRepository.findAll().iterator();
@@ -44,6 +45,21 @@ public class UserService{
         return returnData;
     }
 
+    @Transactional
+    public UserDto getUserById(Integer id) {
+
+        Optional<User> result = userRepository.findById(id);
+
+        return result.isPresent() ? dtoMapper.mapToDto(result.get()) : null;
+    }
+
+    @Transactional
+    public UserDto getUserByEmail(String email) {
+
+        return dtoMapper.mapToDto(userRepository.findUserByEmail(email));
+    }
+
+    @Transactional
     public UserDto createUser(UserDto newEntity) {
 
         User data = dtoMapper.mapToEntity(newEntity);
@@ -54,9 +70,9 @@ public class UserService{
         User createdEntity = userRepository.save(data);
 
         return dtoMapper.mapToDto(createdEntity);
-
     }
 
+    @Transactional
     public UserDto updateUser(Integer id, UserDto newEntity) {
 
         Optional<User> target = userRepository.findById(id);
