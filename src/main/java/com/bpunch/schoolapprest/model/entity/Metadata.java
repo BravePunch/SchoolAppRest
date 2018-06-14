@@ -3,7 +3,6 @@ package com.bpunch.schoolapprest.model.entity;
 import com.bpunch.schoolapprest.model.enums.DataStatus;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,13 +17,22 @@ public class Metadata {
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    private Date creationDate;
+    private Date createdAt;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
-    private Date deletionDate;
+    private Date updatedAt;
 
+    @PrePersist
+    void createdAt() {
+        this.createdAt = this.updatedAt = new Date();
+    }
+
+    @PreUpdate
+    void updatedAt() {
+        this.updatedAt = new Date();
+    }
 
     /* ----- GETTERS/SETTERS */
 
@@ -36,20 +44,20 @@ public class Metadata {
         this.status = status;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Date getDeletionDate() {
-        return deletionDate;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setDeletionDate(Date deletionDate) {
-        this.deletionDate = deletionDate;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 }
