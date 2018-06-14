@@ -1,5 +1,7 @@
 package com.bpunch.schoolapprest.model.entity;
 
+import com.bpunch.schoolapprest.model.enums.UserType;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -22,6 +24,8 @@ public class User {
     private String email;
 
     private String password;
+
+    private UserType type;
 
     @Embedded
     private Metadata metadata;
@@ -69,6 +73,14 @@ public class User {
         this.password = password;
     }
 
+    public UserType getType() {
+        return type;
+    }
+
+    public void setType(UserType type) {
+        this.type = type;
+    }
+
     public Metadata getMetadata() {
         return metadata;
     }
@@ -77,7 +89,6 @@ public class User {
         this.metadata = metadata;
     }
 
-
     /* ----- UTILS */
 
     @Override
@@ -85,18 +96,19 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id &&
+        return Objects.equals(id, user.id) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(email, user.email) &&
                 Objects.equals(password, user.password) &&
+                type == user.type &&
                 Objects.equals(metadata, user.metadata);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, firstName, lastName, email, password, metadata);
+        return Objects.hash(id, firstName, lastName, email, password, type, metadata);
     }
 
     @Override
@@ -107,6 +119,7 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", type=" + type +
                 ", metadata=" + metadata +
                 '}';
     }
